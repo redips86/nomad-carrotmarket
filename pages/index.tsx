@@ -3,28 +3,29 @@ import type {NextPage} from 'next'
 const Home: NextPage = () => {
     return (
         <div
-            className={"bg-slate-400 xl:place-content-center py-20 px-20 grid gap-10 lg:grid-cols-2 xl:grid-cols-3 min-h-screen"}>
-            <div className="bg-white flex flex-col justify-between p-6 rounded-3xl shadow-2xl">
-                <span className={"font-semibold text-3xl"}>Select Item</span>
+            className="bg-slate-400 xl:place-content-center py-20 px-20 grid gap-10 lg:grid-cols-2 xl:grid-cols-3 min-h-screen">
+            <div className="bg-white dark:bg-black flex flex-col justify-between p-6 rounded-3xl shadow-2xl">
+                <span className={"font-semibold dark:text-white text-3xl"}>Select Item</span>
                 <div className={"flex justify-between my-2"}>
-                    <span className={"text-gray-500"}>Gery chair</span>
-                    <span className={"font-semibold"}>$19</span>
+                    <span className={"text-gray-500 dark:text-gray-100"}>Gery chair</span>
+                    <span className={"font-semibold dark:text-white"}>$19</span>
                 </div>
-                <div className={"flex justify-between"}>
-                    <span className={"text-gray-500"}>Gery chair</span>
-                    <span className={"font-semibold"}>$19</span>
+                <div className={"flex justify-between my-2"}>
+                    <span className={"text-gray-500 dark:text-gray-100"}>Gery chair</span>
+                    <span className={"font-semibold dark:text-white"}>$19</span>
                 </div>
                 <div className={"flex justify-between mt-2 pt-2 border-t-2 border-dashed"}>
                     <span>Total</span>
                     <span className={"font-semibold"}>$10</span>
                 </div>
                 <button className="mt-5 bg-blue-500 text-white p-3 text-center rounded-xl w-1/2 mx-auto
-                hover:bg-teal-500 hover:text-black block
+                dark:bg-black dark:border-white dark:border
+                dark:hover:bg-white dark:hover:text-black
                 active:bg-yellow-500 focus:text-red-500">Checkout
                 </button>
             </div>
             <div className={"bg-white overflow-hidden rounded-3xl shadow-2xl"}>
-                <div className="portrait:bg-indigo-500                 landscape:bg-teal-500 p-6 pb-14 xl:pb-60">
+                <div className="bg-blue-500  p-6 pb-14 xl:pb-60">
                     <span className={"text-white text-2xl"}>Profile</span>
                 </div>
                 <div className={"rounded-3xl relative -top-5 bg-white p-6"}>
