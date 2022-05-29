@@ -10,7 +10,7 @@ async function handler(
     const {phone, email} = req.body;
     const payload = phone ? {phone: +phone} : {email}
 
-    const user = await client.user.upsert({
+    /*const user = await client.user.upsert({
         where: {
             ...payload
         },
@@ -19,9 +19,28 @@ async function handler(
             ...payload
         },
         update: {}
-    })
+    })*/
 
-    console.log(user)
+    const token = await client.token.create({
+        data: {
+            payload: "1234",
+            user: {
+                connectOrCreate: {
+                    where: {
+                        ...payload
+                    },
+                    create: {
+                        name: "Anonymous",
+                        ...payload
+                    },
+                }
+            }
+        }
+    });
+
+
+    console.log(token);
+
 
     console.log(req.body);
     res.status(200).json({ok: true});
