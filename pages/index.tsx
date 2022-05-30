@@ -2,9 +2,13 @@ import type {NextPage} from "next";
 import FloatingButton from "../components/floating-button";
 import Item from "../components/item";
 import Layout from "@components/layout";
+import useUser from "@libs/client/useUser";
 
 
 const Home: NextPage = () => {
+    const user = useUser();
+    console.log(user);
+
     return (
         <Layout title="홈" hasTabBar>
             <div className="flex flex-col space-y-5 divide-y">
@@ -12,8 +16,8 @@ const Home: NextPage = () => {
                     <Item
                         id={i}
                         key={i}
-                  title="iPhone 14"
-                  price={99}
+                        title="iPhone 14"
+                        price={99}
                   comments={1}
                   hearts={1}
               />
