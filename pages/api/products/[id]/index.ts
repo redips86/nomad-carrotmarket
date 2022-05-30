@@ -39,8 +39,6 @@ async function handler(
             }
         }
     });
-    console.log(relatedProduct);
-
 
     res.json({ok: true, product, relatedProduct})
 }
