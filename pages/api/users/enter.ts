@@ -1,49 +1,55 @@
 import {NextApiRequest, NextApiResponse} from "next";
-import withHandler from "@libs/server/withHandler";
+import withHandler, {ResponseType} from "@libs/server/withHandler";
 import client from "@libs/server/client";
+import twilio from "twilio";
 
+const twilioClient = twilio(process.env.TWILIO_SID, process.env.TWILIO_TOKEN)
 
 async function handler(
     req: NextApiRequest,
-    res: NextApiResponse
+    res: NextApiResponse<ResponseType>
 ) {
     const {phone, email} = req.body;
-    const payload = phone ? {phone: +phone} : {email}
+    const user = phone ? {phone: +phone} : email ? {email} : null
+    if (!user) {
+        return res.status(400).json({ok: false});
+    }
 
-    /*const user = await client.user.upsert({
-        where: {
-            ...payload
-        },
-        create: {
-            name: "Anonymous",
-            ...payload
-        },
-        update: {}
-    })*/
+
+    const payload = Math.floor(100000 + Math.random() * 900000) + "";
 
     const token = await client.token.create({
         data: {
-            payload: "1234",
+            payload,
             user: {
                 connectOrCreate: {
                     where: {
-                        ...payload
+                        ...user
                     },
                     create: {
                         name: "Anonymous",
-                        ...payload
+                        ...user
                     },
                 }
             }
         }
     });
 
+    if (phone) {
+        const messageInstance = await twilioClient.messages.create({
+            messagingServiceSid: process.env.TWILIO_MSID,
+            to: process.env.TWILIO_TO!,
+            body: `Your login token is ${payload}`,
+        });
 
-    console.log(token);
+        console.log(messageInstance);
+    }
 
 
-    console.log(req.body);
-    res.status(200).json({ok: true});
+    return res.json({
+        ok: true,
+        token
+    })
 }
 ;
 
