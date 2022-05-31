@@ -6,7 +6,7 @@ import useUser from "@libs/client/useUser";
 import useSWR from "swr";
 import {Product} from "@prisma/client";
 
-interface ProductsWithCount extends Product {
+export interface ProductsWithCount extends Product {
     _count: {
         favs: number
     }

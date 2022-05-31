@@ -3,10 +3,10 @@ import Link from "next/link";
 import Layout from "../../components/layout";
 import useUser from "@libs/client/useUser";
 import useSWR from "swr";
-import {User} from "@prisma/client";
+import {Review, User} from "@prisma/client";
 import {cls} from "@libs/client/utils";
 
-interface ReviewWithUser extends User {
+interface ReviewWithUser extends Review {
     createdBy: User;
 }
 
