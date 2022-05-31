@@ -7,7 +7,6 @@ import {Stream} from "@prisma/client";
 import {useForm} from "react-hook-form";
 import useMutation from "@libs/client/useMutation";
 import useUser from "@libs/client/useUser";
-import {useEffect} from "react";
 
 interface StreamMessage {
     id: number;
@@ -41,17 +40,31 @@ const StreamDetail: NextPage = () => {
             return;
         }
         reset();
-        sendMessage(form)
+        mutate(prev => prev && (
+            {
+                ...prev,
+                stream: {
+                    ...prev.stream,
+                    messages:
+                        [...prev.stream.messages,
+                            {
+                                id: Date.now(),
+                                message: form.message,
+                                user: {
+                                    ...user,
+                                }
+                            },
+                        ]
+                }
+            }
+        ), false);
+        //sendMessage(form)
     }
 
-    const {data, mutate} = useSWR<StreamResponse>(router.query.id ? `/api/streams/${router.query.id}` : null);
+    const {data, mutate} = useSWR<StreamResponse>(router.query.id ? `/api/streams/${router.query.id}` : null, {
+        refreshInterval: 1000
+    });
     const [sendMessage, {loading, data: sendMessageData}] = useMutation(`/api/streams/${router.query.id}/messages`);
-
-    useEffect(() => {
-        if (sendMessageData && sendMessageData.ok) {
-            mutate();
-        }
-    }, [sendMessageData, mutate])
 
     return (
         <Layout canGoBack>
