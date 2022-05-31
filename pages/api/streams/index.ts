@@ -13,7 +13,10 @@ async function handler(
     } = req;
 
     if (req.method === "GET") {
-        const stream = await client.stream.findMany()
+        const stream = await client.stream.findMany({
+            take: 10,
+            skip: 0
+        });
 
         res.json({ok: true, stream})
     } else if (req.method === "POST") {
