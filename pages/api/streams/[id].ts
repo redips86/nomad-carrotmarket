@@ -8,26 +8,17 @@ async function handler(
     res: NextApiResponse<ResponseType>
 ) {
     const {
-        session: {user}
+        query: {id}
     } = req;
 
-    const reviews = await client.review.findMany({
+
+    const stream = await client.stream.findUnique({
         where: {
-            createdForId: user?.id
-        },
-        include: {
-            createdBy: {
-                select: {
-                    id: true,
-                    name: true,
-                    avatar: true
-                }
-            }
+            id: +id
         }
     })
 
-
-    res.json({ok: true, reviews})
+    res.json({ok: true, stream})
 }
 
 
