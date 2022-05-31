@@ -13,11 +13,11 @@ async function handler(
         body: {answer}
     } = req;
 
-    const post = await client.post.findUnique({
-        where: {
-            id: +id
-        }
-    });
+    // const post = await client.post.findUnique({
+    //     where: {
+    //         id: +id
+    //     }
+    // });
 
     const newAnswer = await client.answer.create({
         data: {

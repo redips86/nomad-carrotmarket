@@ -28,6 +28,7 @@ async function handler(
                 select: {
                     answer: true,
                     id: true,
+                    createdAt: true,
                     user: {
                         select: {
                             id: true, name: true, avatar: true
