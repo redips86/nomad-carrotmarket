@@ -1,6 +1,6 @@
 import type {NextPage} from "next";
 import Layout from "../../components/layout";
-import ProductList from "@components/productt-list";
+import ProductList from "@components/product-list";
 
 const Bought: NextPage = () => {
     return (
