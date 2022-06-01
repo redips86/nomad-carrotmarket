@@ -8,7 +8,8 @@ async function handler(
     res: NextApiResponse<ResponseType>
 ) {
     const {
-        query: {id}
+        query: {id},
+        session: {user}
     } = req;
 
 
@@ -31,6 +32,12 @@ async function handler(
             }
         }
     })
+
+    const isOwner = stream?.userId === user?.id;
+    if (stream && !isOwner) {
+        stream.cloudflareKey = "xxxxx";
+        stream.cloudflareUrl = "xxxxx";
+    }
 
     res.json({ok: true, stream})
 }
