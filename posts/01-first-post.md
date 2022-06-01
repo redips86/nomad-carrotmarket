@@ -7,3 +7,7 @@ category: thoughts
 # Welcome everyone!
 
 this is first post
+
+- i
+- like
+- kfkdfdaflkj
