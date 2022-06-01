@@ -29,7 +29,7 @@ function MyApp({Component, pageProps}: AppProps) {
                         });
                     };
                 }}
-            />s
+            />
         </SWRConfig>
     );
 }
