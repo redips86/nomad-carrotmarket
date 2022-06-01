@@ -37,7 +37,7 @@ const EditProfile: NextPage = () => {
             setValue("name", user.name);
         }
         if (user?.avatar) {
-            setAvatarPreview(`https://imagedelivery.net/ocHTg6vBdHcjOsgK1jhiKg/${user?.avatar}/public`);
+            setAvatarPreview(`https://imagedelivery.net/ocHTg6vBdHcjOsgK1jhiKg/${user?.avatar}/avatar`);
         }
     }, [user]);
     const [editProfile, {data, loading}] = useMutation<EditProfileResponse>(`/api/users/me`);
