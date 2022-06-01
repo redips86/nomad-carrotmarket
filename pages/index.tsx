@@ -5,6 +5,7 @@ import Layout from "@components/layout";
 import useUser from "@libs/client/useUser";
 import {Product} from "@prisma/client";
 import client from "@libs/server/client";
+import useSWR, {SWRConfig} from "swr";
 
 export interface ProductsWithCount extends Product {
     _count: {
@@ -17,21 +18,21 @@ interface ProductsResponse {
     products: ProductsWithCount[]
 }
 
-const Home: NextPage<{ products: ProductsWithCount[] }> = ({products}) => {
+const Home: NextPage = () => {
     const {user, isLoading} = useUser();
-    // const {data} = useSWR<ProductsResponse>("/api/products")
+    const {data} = useSWR<ProductsResponse>("/api/products")
 
     return (
         <Layout title="홈" hasTabBar>
             <div className="flex flex-col space-y-5 divide-y">
-                {products?.map((product) => (
+                {data?.products?.map((product) => (
                     <Item
                         id={product.id}
                         key={product.id}
                         title={product.name}
                         price={product.price}
                         // comments={1}
-                        hearts={product._count.favs}
+                        hearts={product._count?.favs || 0}
                     />
                 ))}
           <FloatingButton href="/products/upload">
@@ -56,16 +57,26 @@ const Home: NextPage<{ products: ProductsWithCount[] }> = ({products}) => {
     );
 };
 
+const Page: NextPage<{ products: ProductsWithCount[] }> = ({products}) => {
+    return (
+        <SWRConfig
+            value={{
+                fallback: {
+                    "/api/products": {
+                        ok: true,
+                        products,
+                    },
+                },
+            }}
+        >
+            <Home/>
+        </SWRConfig>
+    );
+};
+
+
 export async function getServerSideProps() {
-    const products = await client.product.findMany({
-        include: {
-            _count: {
-                select: {
-                    favs: true
-                }
-            }
-        }
-    });
+    const products = await client.product.findMany({});
 
     return {
         props: {
@@ -74,4 +85,4 @@ export async function getServerSideProps() {
     }
 }
 
-export default Home;
+export default Page;
