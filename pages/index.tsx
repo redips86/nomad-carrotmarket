@@ -3,8 +3,8 @@ import FloatingButton from "../components/floating-button";
 import Item from "../components/item";
 import Layout from "@components/layout";
 import useUser from "@libs/client/useUser";
-import useSWR from "swr";
 import {Product} from "@prisma/client";
+import client from "@libs/server/client";
 
 export interface ProductsWithCount extends Product {
     _count: {
@@ -17,15 +17,14 @@ interface ProductsResponse {
     products: ProductsWithCount[]
 }
 
-const Home: NextPage = () => {
+const Home: NextPage<{ products: ProductsWithCount[] }> = ({products}) => {
     const {user, isLoading} = useUser();
-    const {data} = useSWR<ProductsResponse>("/api/products")
-    console.log(data);
+    // const {data} = useSWR<ProductsResponse>("/api/products")
 
     return (
         <Layout title="홈" hasTabBar>
             <div className="flex flex-col space-y-5 divide-y">
-                {data?.products?.map((product) => (
+                {products?.map((product) => (
                     <Item
                         id={product.id}
                         key={product.id}
@@ -46,15 +45,33 @@ const Home: NextPage = () => {
               >
                   <path
                       strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-              />
-            </svg>
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                  />
+              </svg>
           </FloatingButton>
-        </div>
-      </Layout>
-  );
+            </div>
+        </Layout>
+    );
 };
+
+export async function getServerSideProps() {
+    const products = await client.product.findMany({
+        include: {
+            _count: {
+                select: {
+                    favs: true
+                }
+            }
+        }
+    });
+
+    return {
+        props: {
+            products: JSON.parse(JSON.stringify(products))
+        }
+    }
+}
 
 export default Home;
