@@ -22,10 +22,13 @@ async function handler(
                     connect: {
                         id: user?.id
                     }
-                    }
                 }
             }
+            }
         );
+
+        // production mode 에서 실행이 안됨.
+        // await res.unstable_revalidate("/community");
 
         res.json({ok: true, post})
     } else if (req.method === "GET") {
