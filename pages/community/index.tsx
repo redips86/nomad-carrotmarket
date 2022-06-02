@@ -113,7 +113,7 @@ export async function getStaticProps() {
             posts: JSON.parse(JSON.stringify(posts)),
         },
         /*revalidate: 120,*/
-        /*revalidate: 120,*/
+        revalidate: 20
     }
 }
 
